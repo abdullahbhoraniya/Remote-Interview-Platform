@@ -2,6 +2,7 @@ import express from 'express';
 import { Env } from './lib/env.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { connectDb } from './lib/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +22,7 @@ app.get("/health", (req, res) => {
 if (Env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, '../../Frontend/dist')));
 
-    
+
     app.get("/{*any}", (req, res) => {
         console.log("Comes in ")
         res.sendFile(path.join(__dirname, '../../Frontend', 'dist', 'index.html'));
@@ -29,6 +30,13 @@ if (Env.NODE_ENV === "production") {
 
 }
 
-app.listen(Env.PORT, () => {
-    console.log(`Server is running on http://localhost:${Env.PORT}`);
-});
+const startServer = async () => {
+    try {
+        await connectDb();
+        app.listen(Env.PORT, () => console.log(`Server is running on http://localhost:${Env.PORT}`))
+
+    } catch (error) {
+        console.log("Error starting the server",error)
+    }
+};
+startServer();

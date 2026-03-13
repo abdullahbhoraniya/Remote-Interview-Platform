@@ -1,11 +1,20 @@
-import React from 'react'
+import './App.css'
+import { Show, SignInButton, SignOutButton, SignUpButton, UserButton } from '@clerk/react'
 
-const App = () => {
-  console.log("Comes in")
+function App() {
   return (
-    <div>
-      <h1>wdudedb</h1>
-    </div>
+    <>
+      <header>
+        <Show when="signed-out">
+          <SignInButton mode="modal" />
+          <SignUpButton mode='modal' />
+        </Show>
+        <Show when="signed-in">
+          <SignOutButton/>
+          <UserButton />
+        </Show>
+      </header>
+    </>
   )
 }
 
