@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install --prefix Backend && npm install --prefix Frontend && npm run build --prefix Frontend",
     "start": "node Backend/src/app.js"
-},
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abdullahbhoraniya/Remote-Interview-Platform.git"
