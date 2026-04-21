@@ -19,6 +19,7 @@
     "axios": "^1.13.6",
     "canvas-confetti": "^1.9.4",
     "date-fns": "^4.1.0",
+    "formik": "^2.4.9",
     "lucide-react": "^1.7.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -29,6 +30,7 @@
     "stream-chat": "^9.23.0",
     "stream-chat-react": "^13.9.0",
     "tailwindcss": "^4.2.2",
+    "yup": "^1.7.1",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

@@ -101,6 +101,7 @@ const ProblemPage = () => {
     }
     catch (err) {
       setOutput({ success: false, error: "Failed to execute code. Please try again." });
+      throw err;
     }
     finally{
       setisRunning(false);

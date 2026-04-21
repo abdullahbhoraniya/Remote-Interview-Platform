@@ -53,6 +53,7 @@ export const googleAuth = async (req, res) => {
 
     await newUser.save();
 
+    
     try {
       await upsertUserStream({
         id: newUser._id.toString(),

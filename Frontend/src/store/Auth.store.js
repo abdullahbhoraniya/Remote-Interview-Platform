@@ -1,7 +1,15 @@
 import { create } from 'zustand';
 import { Instance } from '../lib/Instance';
+import { useNavigate } from 'react-router-dom';
+
+
+function callNavigate(){
+  const navigate= useNavigate();
+  navigate("/login");
+}
 
 export const useAuthStore = create((set) => ({
+  
   user: null,
   isAuthenticated: false,
   authChecked: false,
@@ -12,7 +20,25 @@ export const useAuthStore = create((set) => ({
   setAuthChecked: (value) => set({ authChecked: value }),
   setLoading: (value) => set({ loading: value }),
   setError: (error) => set({ error }),
-  logout: () => set({ user: null, isAuthenticated: false, authChecked: true }),
+  logout: async () => {
+    
+  try {
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (err) {
+    console.error("Logout failed", err);
+  }
+
+  set({
+    user: null,
+    isAuthenticated: false,
+    authChecked: true,
+  });
+
+  callNavigate();
+},
 
   loadAuth: async () => {
     set({ loading: true, error: null });

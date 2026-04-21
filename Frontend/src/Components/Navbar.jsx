@@ -1,73 +1,156 @@
-import { Link, useLocation } from "react-router";
-import { BookOpenIcon, LayoutDashboardIcon, SparklesIcon } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  BookOpenIcon,
+  LayoutDashboardIcon,
+  SparklesIcon,
+  SunIcon,
+  MoonIcon,
+  LogOutIcon,
+  UserIcon
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "../store/Auth.store";
 
 function Navbar() {
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const { logout, user } = useAuthStore();
 
   const isActive = (path) => location.pathname === path;
 
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <nav className="bg-base-100/80 backdrop-blur-md border-b border-primary/20 sticky top-0 z-50 shadow-lg">
-      <div className="max-w-7xl mx-auto p-4 flex items-center justify-between">
-        {/* LOGO */}
+    <nav className="bg-base-100/80 backdrop-blur-md border-b border-base-300 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+
+        {/* LEFT - LOGO */}
         <Link
           to="/"
-          className="group flex items-center gap-3 hover:scale-105 transition-transform duration-200"
+          className="flex items-center gap-3 group"
         >
-          <div className="size-10 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent flex items-center justify-center shadow-lg ">
-            <SparklesIcon className="size-6 text-white" />
+          <div className="size-10 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent flex items-center justify-center shadow-md">
+            <SparklesIcon className="size-5 text-white" />
           </div>
 
-          <div className="flex flex-col">
-            <span className="font-black text-xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
-              Talent IQ
-            </span>
-            <span className="text-xs text-base-content/60 font-medium -mt-1">Code Together</span>
+          <div>
+            <h1 className="font-bold text-lg tracking-wide">Talent IQ</h1>
+            <p className="text-xs text-base-content/60">Code Together</p>
           </div>
         </Link>
 
-        <div className="flex items-center gap-1">
-          {/* PROBLEMS PAGE LINK */}
+        {/* CENTER - NAV LINKS */}
+        <div className="hidden md:flex items-center gap-2 bg-base-200/50 px-2 py-1 rounded-xl">
+
           <Link
-            to={"/problems"}
-            className={`px-4 py-2.5 rounded-lg transition-all duration-200 
-              ${
-                isActive("/problems")
-                  ? "bg-primary text-primary-content"
-                  : "hover:bg-base-200 text-base-content/70 hover:text-base-content"
-              }
-              
-              `}
+            to="/problems"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition
+              ${isActive("/problems")
+                ? "bg-primary text-primary-content"
+                : "hover:bg-base-300 text-base-content/70"}
+            `}
           >
-            <div className="flex items-center gap-x-2.5">
-              <BookOpenIcon className="size-4" />
-              <span className="font-medium hidden sm:inline">Problems</span>
-            </div>
+            <BookOpenIcon className="size-4" />
+            Problems
           </Link>
 
-          {/* DASHBORD PAGE LINK */}
           <Link
-            to={"/dashboard"}
-            className={`px-4 py-2.5 rounded-lg transition-all duration-200 
-              ${
-                isActive("/dashboard")
-                  ? "bg-primary text-primary-content"
-                  : "hover:bg-base-200 text-base-content/70 hover:text-base-content"
-              }
-              
-              `}
+            to="/dashboard"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition
+              ${isActive("/dashboard")
+                ? "bg-primary text-primary-content"
+                : "hover:bg-base-300 text-base-content/70"}
+            `}
           >
-            <div className="flex items-center gap-x-2.5">
-              <LayoutDashboardIcon className="size-4" />
-              <span className="font-medium hidden sm:inline">Dashbord</span>
-            </div>
+            <LayoutDashboardIcon className="size-4" />
+            Dashboard
           </Link>
 
-          
+        </div>
+
+        {/* RIGHT - ACTIONS */}
+        <div className="flex items-center gap-3">
+
+          {/* THEME */}
+          <button
+            onClick={toggleTheme}
+            className="btn btn-ghost btn-circle"
+          >
+            {theme === "light" ? (
+              <MoonIcon className="size-5" />
+            ) : (
+              <SunIcon className="size-5" />
+            )}
+          </button>
+
+          {/* USER DROPDOWN */}
+          <div className="dropdown dropdown-end">
+
+            <label tabIndex={0} className="cursor-pointer">
+              <div className="avatar">
+                <div className="w-10 rounded-full bg-primary text-white flex items-center justify-center">
+                  {user?.name?.charAt(0) || "U"}
+                </div>
+              </div>
+            </label>
+
+            <ul
+              tabIndex={0}
+              className="mt-3 z-[1] p-2 shadow-lg menu menu-sm dropdown-content bg-base-100 rounded-xl w-52 border border-base-300"
+            >
+              {/* USER INFO */}
+              <li className="px-3 py-2 text-sm text-base-content/70">
+                {user?.name || "User"}
+              </li>
+
+              <div className="divider my-1"></div>
+
+              {/* PROFILE */}
+              <li>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="flex items-center gap-2"
+                >
+                  <UserIcon className="size-4" />
+                  Profile
+                </button>
+              </li>
+
+              {/* LOGOUT */}
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-red-500"
+                >
+                  <LogOutIcon className="size-4" />
+                  Logout
+                </button>
+              </li>
+
+            </ul>
+          </div>
+
         </div>
       </div>
     </nav>
   );
 }
+
 export default Navbar;
