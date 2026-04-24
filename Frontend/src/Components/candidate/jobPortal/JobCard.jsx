@@ -1,4 +1,4 @@
-import { MapPin, Briefcase } from "lucide-react";
+import { MapPin, Briefcase, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const JobCard = ({ job }) => {
@@ -9,15 +9,27 @@ const JobCard = ({ job }) => {
       <div className="space-y-2">
         <h2 className="text-lg font-semibold">{job.title}</h2>
 
-        <div className="flex items-center gap-3 text-sm text-base-content/60">
+        <div className="flex items-center gap-3 text-sm text-base-content/60 flex-wrap">
+
           <span className="flex items-center gap-1">
             <Briefcase size={14} />
-            {job.company || "Company"}
+            {job.role}
           </span>
 
           <span className="flex items-center gap-1">
             <MapPin size={14} />
             {job.location}
+          </span>
+
+          {/* EXPERIENCE */}
+          <span className="text-xs bg-base-200 px-2 py-1 rounded-md">
+            {job.experience} yrs
+          </span>
+
+          {/* SALARY */}
+          <span className="flex items-center gap-1 text-xs bg-base-200 px-2 py-1 rounded-md">
+            <IndianRupee size={12} />
+            {job.salaryRange?.min} - {job.salaryRange?.max} LPA
           </span>
         </div>
 
@@ -39,6 +51,7 @@ const JobCard = ({ job }) => {
         <Link to={`/job/${job._id}`} className="btn btn-ghost btn-sm">
           View
         </Link>
+
         <button className="btn btn-primary btn-sm rounded-full px-5">
           Apply
         </button>
