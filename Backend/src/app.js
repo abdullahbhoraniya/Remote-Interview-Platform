@@ -13,6 +13,7 @@ import sessionRouter from './routes/session.route.js';
 import roleRouter from './routes/onboard.route.js';
 import otpRoute from './routes/otp.route.js';
 import recruiterRouter from './routes/recruiter.route.js';
+import candidateRoute from './routes/candidate.route.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +34,8 @@ app.use("/api/chat",chatRouter)
 app.use("/api/sessions",sessionRouter);
 app.use(`/api/onboarding`,roleRouter);
 app.use(`/api/otp`,otpRoute);
-app.use(`/api/recruiter`,recruiterRouter)
+app.use(`/api/recruiter`,recruiterRouter);
+app.use('/api/candidate',candidateRoute);
 
 // Logout controller
 app.post("/api/logout", (req, res) => {

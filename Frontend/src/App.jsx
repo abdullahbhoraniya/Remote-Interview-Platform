@@ -16,6 +16,8 @@ import ProfileSetup from './Components/ProfileSetup.jsx';
 import Recruiter from './Pages/Recruiter.jsx';
 import CandidateDashBoard from './Pages/CandidateDashBoard.jsx';
 import RecruiterPortal from './Pages/RecruiterPortal.jsx';
+import JobDetailPage from './Components/Recruiter/Components/CandidateComponents/JobDetailPage.jsx';
+import JobEdit from './Components/Recruiter/Components/JobComponents/JobEdit.jsx';
 
 function App() {
   const { authChecked, user, loadAuth } = useAuthStore();
@@ -40,6 +42,8 @@ function App() {
         <Route path='/auth-redirect' element={<ProtectedRoute><AuthRedirect/></ProtectedRoute>}/>
         <Route path='/problem/:id' element={<ProtectedRoute><ProblemPage/></ProtectedRoute>}/>
         <Route path='/session/:id' element={<ProtectedRoute><SessionPage/></ProtectedRoute>}/>
+        <Route path='/recruiter/job/edit/:id' element={<ProtectedRoute><JobEdit/></ProtectedRoute>}/>
+        <Route path='/job/:id' element={<ProtectedRoute><JobDetailPage/></ProtectedRoute>}/>
         <Route path='/candidate/setup' element={<ProtectedRoute><ProfileSetup/></ProtectedRoute>}/>
         <Route path='/recruiter/setup' element={<ProtectedRoute><Recruiter/></ProtectedRoute>}/>
         <Route path='/recruiter/dashboard' element={<ProtectedRoute><RecruiterPortal/></ProtectedRoute>}/>
